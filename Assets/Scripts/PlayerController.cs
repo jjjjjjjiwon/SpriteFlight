@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,23 +10,38 @@ public class PlayerController : MonoBehaviour
     public float thrustForce = 1f;
     public float maxSpeed = 5f;
     public float scoreMultiplier = 10f;
+    
+    public UIDocument uiDocument;
 
     private float score = 0f;
     private float elapsedTime = 0f;
     private Rigidbody2D rb;
+    private Label scoreText;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
+    }
+    
+    void Update()
+    {
+        UpdateScore();
+        MovePlayer();
+        BoosterFlame();
     }
 
-    void Update()
+    void UpdateScore()
     {
         elapsedTime += Time.deltaTime;
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
         Debug.Log("Score: " + score);
+        scoreText.text = $" Score : {score} ";
+    }
 
-        if (Mouse.current.leftButton.isPressed)
+    void MovePlayer()
+    {
+                if (Mouse.current.leftButton.isPressed)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             //Debug.Log("Mouse position" + mousePos);
@@ -41,6 +57,10 @@ public class PlayerController : MonoBehaviour
 
 
         }
+    }
+
+    void BoosterFlame()
+    {
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             boosterFlame.SetActive(true);
@@ -49,7 +69,6 @@ public class PlayerController : MonoBehaviour
         {
             boosterFlame.SetActive(false);
         }
-
     }
 
     void OnCollisionEnter2D(Collision2D collision)

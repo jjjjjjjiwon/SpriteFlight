@@ -1809,7 +1809,8 @@ MonoBehaviour:
   boosterFlame: {fileID: 1236461182}
   thrustForce: 3
   maxSpeed: 5
-  ScoreMultiplier: 10
+  scoreMultiplier: 10
+  uiDocument: {fileID: 1943705722}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
